@@ -1,0 +1,47 @@
+Character Document
+deruwyn_arnor {
+	"type": "character",
+	"name": "Deruwyn Arnor",
+	"player": "Daniel Jackson",
+	"class": "Wizard",
+
+	"hp": {
+		"max": 60,
+		"current": 42,
+		"min": -16
+	},
+	"status": {
+		"disabled": false,
+		"dying": false,
+		"dead": false,
+		"healthy": true
+	}
+}
+
+Game Document
+daniels_game {
+	"type": "game"
+	"name": "Daniel's Game",
+	"owner": "deruwyn",
+	"characters": [
+		"deruwyn_arnor",
+		"oreth_lecroix",
+		"ethan_blackstone"
+	],
+	"active": true
+}
+
+deruwyn {
+	"type": "user",
+	"name": {
+		"first": "Daniel",
+		"last": "Jacskon"
+	},
+	"characters": [
+		'deruwyn_arnor',
+	],
+	"games": [
+		"daniels_game"
+	],
+
+}
