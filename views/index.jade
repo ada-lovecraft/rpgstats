@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	h1= title
+	p Welcome to #{title}
+	p current games
+		ul 
+			each game in games
+				li= game.key
+	p current players
+		ul
+			each player in players
+				li= player.key
+	p current characters
+		ul
+			each character in characters
+				li= character.key

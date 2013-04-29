@@ -20,7 +20,7 @@ deruwyn_arnor {
 
 Game Document
 daniels_game {
-	"type": "game"
+	"type": "game",
 	"name": "Daniel's Game",
 	"owner": "deruwyn",
 	"characters": [
@@ -38,7 +38,7 @@ deruwyn {
 		"last": "Jacskon"
 	},
 	"characters": [
-		'deruwyn_arnor',
+		"deruwyn_arnor",
 	],
 	"games": [
 		"daniels_game"

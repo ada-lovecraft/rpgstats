@@ -4,13 +4,18 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
+  , async = require('async')
   , path = require('path');
 
 var nodeCouchDB = require("node-couchdb");
-var couch = new nodeCouchDB('96.126.118.232', 5984);
+var couch = new nodeCouchDB('localhost', 8092);
+
+var gameListURL = "_design/dev_games/_view/gamesByTitle";
+var playerListURL = "_design/dev_players/_view/playersByName"
+var characterListURL = "_design/dev_characters/_view/charactersByName";
+
 
 var app = express();
 
@@ -32,9 +37,33 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/', function (req,res) {
+	async.parallel({
+		getGames: function(callback) {
+			couch.get('rpgstats', gameListURL, function(err,results) {
+				callback(err,results);
+			});
+		},
+		getPlayers: function(callback) {
+			couch.get('rpgstats', playerListURL, function(err,results) {
+				callback(err,results);
+			});
+		},
+		getCharacters: function(callback) {
+			couch.get('rpgstats', characterListURL, function(err,results) {
+				callback(err,results);
+			});
+		}
+	}, function(err,results) {
+		console.log('callback');
+		console.dir(results.getGames.data.rows);
+		res.render('index', { title: 'RPGStats', games: results.getGames.data.rows, players: results.getPlayers.data.rows, characters: results.getCharacters.data.rows});;
+	});
+	
+});
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
