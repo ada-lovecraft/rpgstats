@@ -17,6 +17,7 @@ var playerListURL = "_design/dev_players/_view/playersByName"
 var characterListURL = "_design/dev_characters/_view/charactersByName";
 
 
+
 var app = express();
 
 // all environments
@@ -62,6 +63,24 @@ app.get('/', function (req,res) {
 	
 });
 
+app.get('/games/:id', function (req,res) {
+	async.parallel({
+		characters: function(callback) {
+			couch.get('rpgstats', req.params.id, function(err,results) {
+				console.dir(results.data);
+				couch.get('rpgstats',characterListURL,{keys: results.data.characters}, function(err, results) {
+					console.log(err);
+					console.log(results);
+					callback(err,results);
+				});
+			});
+		}
+	}, function(err,results) {
+		console.log('callback');
+		console.dir(results.getGames.data.rows);
+		res.render('index', { title: 'RPGStats', characters: characters});;
+	});
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
